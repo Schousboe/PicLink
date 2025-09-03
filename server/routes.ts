@@ -133,7 +133,43 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // Short link redirect endpoint
+  // API endpoint to get image metadata
+  app.get("/api/image/:id", async (req, res) => {
+    try {
+      const { id } = req.params;
+      const image = await storage.getImageById(id);
+      
+      if (!image) {
+        return res.status(404).json({
+          message: "Image not found",
+        });
+      }
+
+      // Get the host for short URL
+      const host = req.get("host") || "localhost:5000";
+      const protocol = req.secure ? "https" : "http";
+      const shortUrl = `${protocol}://${host}/i/${image.id}`;
+
+      const response: UploadResponse = {
+        id: image.id,
+        rawUrl: image.rawUrl,
+        shortUrl,
+        width: image.width || undefined,
+        height: image.height || undefined,
+        size: image.size,
+        mime: image.mime,
+      };
+
+      res.json(response);
+    } catch (error) {
+      console.error("API error:", error);
+      res.status(500).json({
+        message: "Internal server error",
+      });
+    }
+  });
+
+  // Short link redirect endpoint - detect if it's a browser request
   app.get("/i/:id", async (req, res) => {
     try {
       const { id } = req.params;
@@ -145,7 +181,18 @@ export async function registerRoutes(app: Express): Promise<Server> {
         });
       }
 
-      // Set cache headers for immutable redirect
+      // Check if request is from a browser (Accept header contains text/html)
+      const acceptHeader = req.get("Accept") || "";
+      const isBrowserRequest = acceptHeader.includes("text/html");
+      
+      if (isBrowserRequest) {
+        // For browser requests, serve the React app which will handle the /i/:id route
+        // This will be handled by the Vite dev server or static files in production
+        res.redirect("/");
+        return;
+      }
+
+      // For direct/API requests (like curl, wget, etc.), redirect to raw image
       res.set({
         "Cache-Control": "public, immutable, max-age=31536000",
         "Location": image.rawUrl,
