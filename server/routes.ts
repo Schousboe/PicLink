@@ -266,66 +266,84 @@ function generateImageViewPage(image: {
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600&display=swap" rel="stylesheet">
-    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: ['class'],
+            theme: {
+                extend: {
+                    colors: {
+                        background: 'hsl(var(--background))',
+                        foreground: 'hsl(var(--foreground))',
+                        card: 'hsl(var(--card))',
+                        'card-foreground': 'hsl(var(--card-foreground))',
+                        primary: 'hsl(var(--primary))',
+                        'primary-foreground': 'hsl(var(--primary-foreground))',
+                        secondary: 'hsl(var(--secondary))',
+                        'secondary-foreground': 'hsl(var(--secondary-foreground))',
+                        muted: 'hsl(var(--muted))',
+                        'muted-foreground': 'hsl(var(--muted-foreground))',
+                        accent: 'hsl(var(--accent))',
+                        'accent-foreground': 'hsl(var(--accent-foreground))',
+                        border: 'hsl(var(--border))',
+                        input: 'hsl(var(--input))',
+                        ring: 'hsl(var(--ring))'
+                    }
+                }
+            }
+        }
+    </script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600&display=swap');
 
         :root {
-          --background: hsl(195.6, 27.17%, 36.08%);
-          --foreground: hsl(0, 6.67%, 2.94%);
-          --card: hsl(180, 6.6667%, 97.0588%);
-          --card-foreground: hsl(240, 2.7%, 14.51%);
-          --popover: hsl(0, 0%, 100%);
-          --popover-foreground: hsl(210, 25%, 7.8431%);
-          --primary: hsl(203.8863, 88.2845%, 53.1373%);
-          --primary-foreground: hsl(0, 0%, 100%);
-          --secondary: hsl(210, 25%, 7.8431%);
-          --secondary-foreground: hsl(0, 0%, 100%);
-          --muted: hsl(0, 0%, 98.82%);
-          --muted-foreground: hsl(210, 10%, 35.29%);
-          --accent: hsl(211.5789, 51.3514%, 92.7451%);
-          --accent-foreground: hsl(203.8863, 88.2845%, 53.1373%);
-          --destructive: hsl(356.3033, 90.5579%, 54.3137%);
-          --destructive-foreground: hsl(0, 0%, 100%);
-          --border: hsl(180, 6.45%, 24.31%);
-          --input: hsl(180, 4.88%, 16.08%);
-          --ring: hsl(180, 6.45%, 24.31%);
+          --background: 195.6 27.17% 36.08%;
+          --foreground: 0 6.67% 2.94%;
+          --card: 180 6.6667% 97.0588%;
+          --card-foreground: 240 2.7% 14.51%;
+          --popover: 0 0% 100%;
+          --popover-foreground: 210 25% 7.8431%;
+          --primary: 203.8863 88.2845% 53.1373%;
+          --primary-foreground: 0 0% 100%;
+          --secondary: 210 25% 7.8431%;
+          --secondary-foreground: 0 0% 100%;
+          --muted: 0 0% 98.82%;
+          --muted-foreground: 210 10% 35.29%;
+          --accent: 211.5789 51.3514% 92.7451%;
+          --accent-foreground: 203.8863 88.2845% 53.1373%;
+          --destructive: 356.3033 90.5579% 54.3137%;
+          --destructive-foreground: 0 0% 100%;
+          --border: 180 6.45% 24.31%;
+          --input: 180 4.88% 16.08%;
+          --ring: 180 6.45% 24.31%;
           --radius: 1.5rem;
         }
 
         .dark {
-          --background: hsl(0, 0%, 0%);
-          --foreground: hsl(200, 6.6667%, 91.1765%);
-          --card: hsl(228, 9.8039%, 10%);
-          --card-foreground: hsl(0, 0%, 85.0980%);
-          --popover: hsl(0, 0%, 0%);
-          --popover-foreground: hsl(200, 6.6667%, 91.1765%);
-          --primary: hsl(203.7736, 87.6033%, 52.5490%);
-          --primary-foreground: hsl(0, 0%, 100%);
-          --secondary: hsl(195.0000, 15.3846%, 94.9020%);
-          --secondary-foreground: hsl(210, 25%, 7.8431%);
-          --muted: hsl(0, 0%, 9.4118%);
-          --muted-foreground: hsl(210, 3.3898%, 46.2745%);
-          --accent: hsl(205.7143, 70%, 7.8431%);
-          --accent-foreground: hsl(203.7736, 87.6033%, 52.5490%);
-          --destructive: hsl(356.3033, 90.5579%, 54.3137%);
-          --destructive-foreground: hsl(0, 0%, 100%);
-          --border: hsl(210, 5.2632%, 14.9020%);
-          --input: hsl(207.6923, 27.6596%, 18.4314%);
-          --ring: hsl(202.8169, 89.1213%, 53.1373%);
+          --background: 0 0% 0%;
+          --foreground: 200 6.6667% 91.1765%;
+          --card: 228 9.8039% 10%;
+          --card-foreground: 0 0% 85.0980%;
+          --popover: 0 0% 0%;
+          --popover-foreground: 200 6.6667% 91.1765%;
+          --primary: 203.7736 87.6033% 52.5490%;
+          --primary-foreground: 0 0% 100%;
+          --secondary: 195.0000 15.3846% 94.9020%;
+          --secondary-foreground: 210 25% 7.8431%;
+          --muted: 0 0% 9.4118%;
+          --muted-foreground: 210 3.3898% 46.2745%;
+          --accent: 205.7143 70% 7.8431%;
+          --accent-foreground: 203.7736 87.6033% 52.5490%;
+          --destructive: 356.3033 90.5579% 54.3137%;
+          --destructive-foreground: 0 0% 100%;
+          --border: 210 5.2632% 14.9020%;
+          --input: 207.6923 27.6596% 18.4314%;
+          --ring: 202.8169 89.1213% 53.1373%;
           --radius: 1.3rem;
-        }
-
-        * {
-          border-color: hsl(var(--border));
         }
 
         body {
           font-family: 'Poppins', sans-serif;
-          background-color: hsl(var(--background));
-          color: hsl(var(--foreground));
-          line-height: 1.6;
-          -webkit-font-smoothing: antialiased;
         }
 
         .fade-in {
@@ -387,7 +405,7 @@ function generateImageViewPage(image: {
         
         <!-- Image Viewer -->
         <div class="bg-card border border-border rounded-xl p-8 mb-8 text-center shadow-sm">
-            <img src="${image.rawUrl}" alt="Image" class="max-w-[90vw] max-h-[90vh] mx-auto rounded-lg shadow-lg" />
+            <img src="${image.rawUrl}" alt="Image" class="max-w-full max-h-96 w-auto h-auto mx-auto rounded-lg shadow-lg object-contain" />
         </div>
         
         <!-- Copy Snippets -->
