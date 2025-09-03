@@ -239,7 +239,6 @@ function generateImageViewPage(image: {
   };
 
   const markdownFormat = `![Image](${image.rawUrl})`;
-  const htmlFormat = `<img src="${image.rawUrl}" alt="Image" />`;
   const bbcodeFormat = `[img]${image.rawUrl}[/img]`;
 
   return `
@@ -264,14 +263,104 @@ function generateImageViewPage(image: {
     <meta name="twitter:description" content="Uploaded image">
     <meta name="twitter:image" content="${image.rawUrl}">
     
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        :root {
+          --background: hsl(195.6, 27.17%, 36.08%);
+          --foreground: hsl(0, 6.67%, 2.94%);
+          --card: hsl(180, 6.6667%, 97.0588%);
+          --card-foreground: hsl(240, 2.7%, 14.51%);
+          --primary: hsl(203.8863, 88.2845%, 53.1373%);
+          --primary-foreground: hsl(0, 0%, 100%);
+          --muted-foreground: hsl(210, 10%, 35.29%);
+          --accent: hsl(211.5789, 51.3514%, 92.7451%);
+          --accent-foreground: hsl(203.8863, 88.2845%, 53.1373%);
+          --border: hsl(180, 6.45%, 24.31%);
+        }
+        
+        .dark {
+          --background: hsl(0, 0%, 0%);
+          --foreground: hsl(200, 6.6667%, 91.1765%);
+          --card: hsl(228, 9.8039%, 10%);
+          --card-foreground: hsl(0, 0%, 85.0980%);
+          --primary: hsl(203.7736, 87.6033%, 52.5490%);
+          --primary-foreground: hsl(0, 0%, 100%);
+          --muted-foreground: hsl(210, 3.3898%, 46.2745%);
+          --accent: hsl(205.7143, 70%, 7.8431%);
+          --accent-foreground: hsl(203.7736, 87.6033%, 52.5490%);
+          --border: hsl(210, 5.2632%, 14.9020%);
+        }
+        
+        body {
+          font-family: 'Poppins', sans-serif;
+          background-color: hsl(var(--background));
+          color: hsl(var(--foreground));
+        }
+        
+        .header-bg {
+          background-color: hsl(var(--card));
+          border-bottom: 1px solid hsl(var(--border));
+        }
+        
+        .logo-bg {
+          background-color: hsl(var(--primary));
+          color: hsl(var(--primary-foreground));
+        }
+        
+        .header-text {
+          color: hsl(var(--card-foreground));
+        }
+        
+        .muted-text {
+          color: hsl(var(--muted-foreground));
+        }
+        
+        .theme-btn {
+          background-color: hsl(var(--accent));
+          color: hsl(var(--accent-foreground));
+        }
+        
+        .theme-btn:hover {
+          background-color: hsl(var(--accent) / 0.8);
+        }
+    </style>
 </head>
-<body class="bg-gray-50 min-h-screen">
+<body class="min-h-screen">
+    <!-- Header - Exact same as original site -->
+    <header class="header-bg">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 logo-bg rounded-lg flex items-center justify-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6">
+                            <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+                            <circle cx="9" cy="9" r="2"/>
+                            <path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/>
+                        </svg>
+                    </div>
+                    <div>
+                        <h1 class="text-2xl font-bold header-text">PicLink</h1>
+                        <p class="text-xs muted-text">Simple Image Hosting</p>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <button onclick="toggleTheme()" class="w-10 h-10 rounded-lg theme-btn flex items-center justify-center hover:theme-btn" aria-label="Toggle theme">
+                        <svg id="theme-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="5"/>
+                            <path d="M12 1v2M12 21v2M4.2 4.2l1.4 1.4M18.4 18.4l1.4 1.4M1 12h2M21 12h2M4.2 19.8l1.4-1.4M18.4 5.6l1.4-1.4"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
     <main class="max-w-4xl mx-auto p-4">
         <!-- Toolbar -->
-        <div class="bg-white rounded-lg border p-4 mb-4 flex gap-2">
+        <div style="background-color: hsl(var(--card)); border: 1px solid hsl(var(--border));" class="rounded-xl p-4 mb-4 flex gap-2">
             <a href="${image.rawUrl}" target="_blank" rel="noopener" 
-               class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+               style="background-color: hsl(var(--primary)); color: hsl(var(--primary-foreground));" class="px-4 py-2 rounded-lg hover:opacity-90 transition-opacity"
                aria-label="Open image file">
                 Open image file
             </a>
@@ -328,20 +417,6 @@ function generateImageViewPage(image: {
                         </button>
                     </div>
                 </div>
-                
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">HTML</label>
-                    <div class="flex gap-2">
-                        <input type="text" value="${htmlFormat}" readonly 
-                               class="flex-1 p-2 border rounded bg-gray-50 font-mono text-sm"
-                               aria-label="HTML format">
-                        <button onclick="copyToClipboard('${htmlFormat}', 'HTML')" 
-                                class="bg-gray-600 text-white px-4 py-2 rounded hover:bg-gray-700"
-                                aria-label="Copy HTML">
-                            Copy
-                        </button>
-                    </div>
-                </div>
             </div>
         </div>
         
@@ -358,6 +433,30 @@ function generateImageViewPage(image: {
          role="alert" aria-live="polite"></div>
     
     <script>
+        // Theme toggle functionality
+        let currentTheme = localStorage.getItem('theme') || 'dark';
+        document.documentElement.classList.toggle('dark', currentTheme === 'dark');
+        
+        function toggleTheme() {
+            currentTheme = currentTheme === 'light' ? 'dark' : 'light';
+            document.documentElement.classList.toggle('dark', currentTheme === 'dark');
+            localStorage.setItem('theme', currentTheme);
+            
+            // Update icon
+            const icon = document.getElementById('theme-icon');
+            if (currentTheme === 'dark') {
+                icon.innerHTML = '<circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.2 4.2l1.4 1.4M18.4 18.4l1.4 1.4M1 12h2M21 12h2M4.2 19.8l1.4-1.4M18.4 5.6l1.4-1.4"/>';
+            } else {
+                icon.innerHTML = '<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>';
+            }
+        }
+        
+        // Initialize theme icon
+        const icon = document.getElementById('theme-icon');
+        if (currentTheme === 'light') {
+            icon.innerHTML = '<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>';
+        }
+        
         function copyToClipboard(text, label) {
             navigator.clipboard.writeText(text).then(() => {
                 showToast('Copied ' + label + '!');
