@@ -238,17 +238,6 @@ function generateImageViewPage(image: {
     return `${parseFloat((bytes / Math.pow(k, i)).toFixed(1))} ${sizes[i]}`;
   };
 
-  const formatDate = (date: Date | null): string => {
-    if (!date) return "Unknown";
-    return date.toLocaleDateString("en-US", {
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-      hour: "2-digit",
-      minute: "2-digit"
-    });
-  };
-
   const markdownFormat = `![Image](${image.rawUrl})`;
   const htmlFormat = `<img src="${image.rawUrl}" alt="Image" />`;
   const bbcodeFormat = `[img]${image.rawUrl}[/img]`;
@@ -259,11 +248,11 @@ function generateImageViewPage(image: {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PicLink — Image</title>
-    <meta name="description" content="Uploaded image hosted on PicLink">
+    <title>Image</title>
+    <meta name="description" content="Uploaded image">
     
     <!-- OpenGraph Meta Tags -->
-    <meta property="og:title" content="PicLink Image">
+    <meta property="og:title" content="Image">
     <meta property="og:description" content="Uploaded image">
     <meta property="og:image" content="${image.rawUrl}">
     <meta property="og:url" content="${image.shortUrl}">
@@ -271,361 +260,107 @@ function generateImageViewPage(image: {
     
     <!-- Twitter Meta Tags -->
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="PicLink Image">
+    <meta name="twitter:title" content="Image">
     <meta name="twitter:description" content="Uploaded image">
     <meta name="twitter:image" content="${image.rawUrl}">
     
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: #f8fafc;
-            color: #334155;
-            line-height: 1.6;
-        }
-        
-        .header {
-            background: white;
-            border-bottom: 1px solid #e2e8f0;
-            padding: 1rem 0;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
-        
-        .header-content {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 1rem;
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-        }
-        
-        .logo {
-            width: 40px;
-            height: 40px;
-            background: #3b82f6;
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-weight: bold;
-        }
-        
-        .header h1 {
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: #1e293b;
-        }
-        
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 2rem 1rem;
-        }
-        
-        .toolbar {
-            background: white;
-            border: 1px solid #e2e8f0;
-            border-radius: 12px;
-            padding: 1rem;
-            margin-bottom: 2rem;
-            display: flex;
-            flex-wrap: wrap;
-            gap: 1rem;
-            align-items: center;
-        }
-        
-        .btn {
-            background: #3b82f6;
-            color: white;
-            border: none;
-            padding: 0.5rem 1rem;
-            border-radius: 6px;
-            cursor: pointer;
-            text-decoration: none;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            font-size: 0.875rem;
-            transition: background-color 0.2s;
-        }
-        
-        .btn:hover {
-            background: #2563eb;
-        }
-        
-        .btn-secondary {
-            background: #64748b;
-        }
-        
-        .btn-secondary:hover {
-            background: #475569;
-        }
-        
-        .btn-outline {
-            background: transparent;
-            color: #64748b;
-            border: 1px solid #cbd5e1;
-        }
-        
-        .btn-outline:hover {
-            background: #f1f5f9;
-        }
-        
-        .image-container {
-            background: white;
-            border: 1px solid #e2e8f0;
-            border-radius: 12px;
-            padding: 2rem;
-            text-align: center;
-            margin-bottom: 2rem;
-        }
-        
-        .image-container img {
-            max-width: 90vw;
-            max-height: 90vh;
-            width: auto;
-            height: auto;
-            border-radius: 8px;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-        }
-        
-        .metadata {
-            background: white;
-            border: 1px solid #e2e8f0;
-            border-radius: 12px;
-            padding: 1.5rem;
-            margin-bottom: 2rem;
-        }
-        
-        .metadata h3 {
-            font-size: 1.125rem;
-            font-weight: 600;
-            margin-bottom: 1rem;
-            color: #1e293b;
-        }
-        
-        .metadata-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1rem;
-        }
-        
-        .metadata-item {
-            display: flex;
-            justify-content: space-between;
-            padding: 0.5rem 0;
-            border-bottom: 1px solid #f1f5f9;
-        }
-        
-        .metadata-label {
-            font-weight: 500;
-            color: #64748b;
-        }
-        
-        .metadata-value {
-            color: #1e293b;
-            font-family: monospace;
-        }
-        
-        .copy-section {
-            background: white;
-            border: 1px solid #e2e8f0;
-            border-radius: 12px;
-            padding: 1.5rem;
-            margin-bottom: 2rem;
-        }
-        
-        .copy-section h3 {
-            font-size: 1.125rem;
-            font-weight: 600;
-            margin-bottom: 1rem;
-            color: #1e293b;
-        }
-        
-        .copy-item {
-            margin-bottom: 1rem;
-        }
-        
-        .copy-label {
-            display: block;
-            font-weight: 500;
-            color: #64748b;
-            margin-bottom: 0.25rem;
-        }
-        
-        .copy-input-group {
-            display: flex;
-            gap: 0.5rem;
-        }
-        
-        .copy-input {
-            flex: 1;
-            padding: 0.5rem;
-            border: 1px solid #cbd5e1;
-            border-radius: 6px;
-            font-family: monospace;
-            font-size: 0.875rem;
-            background: #f8fafc;
-        }
-        
-        .actions {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 1rem;
-            justify-content: center;
-        }
-        
-        .toast {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            background: #059669;
-            color: white;
-            padding: 1rem 1.5rem;
-            border-radius: 8px;
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-            transform: translateX(100%);
-            transition: transform 0.3s ease;
-            z-index: 1000;
-        }
-        
-        .toast.show {
-            transform: translateX(0);
-        }
-        
-        @media (max-width: 768px) {
-            .toolbar {
-                flex-direction: column;
-                align-items: stretch;
-            }
-            
-            .btn {
-                justify-content: center;
-            }
-            
-            .metadata-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .actions {
-                flex-direction: column;
-            }
-        }
-    </style>
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
-    <header class="header">
-        <div class="header-content">
-            <div class="logo">📷</div>
-            <h1>PicLink</h1>
-        </div>
-    </header>
-    
-    <main class="container">
-        <div class="toolbar">
-            <a href="${image.rawUrl}" target="_blank" rel="noopener" class="btn" aria-label="Open original image">
-                🔍 Open Original
-            </a>
-            <button onclick="copyToClipboard('${image.rawUrl}', 'Direct URL')" class="btn btn-secondary" aria-label="Copy direct URL">
-                📋 Copy Direct URL
-            </button>
-            <button onclick="copyToClipboard('${image.shortUrl}', 'Share URL')" class="btn btn-secondary" aria-label="Copy share URL">
-                🔗 Copy Share URL
-            </button>
-            <a href="/" class="btn btn-outline" aria-label="Upload another image">
-                ➕ Upload Another
+<body class="bg-gray-50 min-h-screen">
+    <main class="max-w-4xl mx-auto p-4">
+        <!-- Toolbar -->
+        <div class="bg-white rounded-lg border p-4 mb-4 flex gap-2">
+            <a href="${image.rawUrl}" target="_blank" rel="noopener" 
+               class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+               aria-label="Open image file">
+                Open image file
             </a>
         </div>
         
-        <div class="image-container">
-            <img src="${image.rawUrl}" alt="Uploaded image" loading="lazy" />
+        <!-- Image Viewer -->
+        <div class="bg-white rounded-lg border p-4 mb-4 text-center">
+            <img src="${image.rawUrl}" alt="Image" class="max-w-full max-h-[90vh] mx-auto" />
         </div>
         
-        <div class="metadata">
-            <h3>Image Information</h3>
-            <div class="metadata-grid">
-                <div class="metadata-item">
-                    <span class="metadata-label">File Size:</span>
-                    <span class="metadata-value">${formatBytes(image.size)}</span>
+        <!-- Copy Snippets -->
+        <div class="bg-white rounded-lg border p-4 mb-4">
+            <h3 class="text-lg font-medium mb-4">Copy snippets</h3>
+            
+            <div class="space-y-3">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Direct URL</label>
+                    <div class="flex gap-2">
+                        <input type="text" value="${image.rawUrl}" readonly 
+                               class="flex-1 p-2 border rounded bg-gray-50 font-mono text-sm"
+                               aria-label="Direct URL">
+                        <button onclick="copyToClipboard('${image.rawUrl}', 'Direct URL')" 
+                                class="bg-gray-600 text-white px-4 py-2 rounded hover:bg-gray-700"
+                                aria-label="Copy direct URL">
+                            Copy
+                        </button>
+                    </div>
                 </div>
-                <div class="metadata-item">
-                    <span class="metadata-label">MIME Type:</span>
-                    <span class="metadata-value">${image.mime}</span>
+                
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Markdown</label>
+                    <div class="flex gap-2">
+                        <input type="text" value="${markdownFormat}" readonly 
+                               class="flex-1 p-2 border rounded bg-gray-50 font-mono text-sm"
+                               aria-label="Markdown format">
+                        <button onclick="copyToClipboard('${markdownFormat}', 'Markdown')" 
+                                class="bg-gray-600 text-white px-4 py-2 rounded hover:bg-gray-700"
+                                aria-label="Copy markdown">
+                            Copy
+                        </button>
+                    </div>
                 </div>
-                ${image.width && image.height ? `
-                <div class="metadata-item">
-                    <span class="metadata-label">Dimensions:</span>
-                    <span class="metadata-value">${image.width} × ${image.height}</span>
+                
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">BBCode</label>
+                    <div class="flex gap-2">
+                        <input type="text" value="${bbcodeFormat}" readonly 
+                               class="flex-1 p-2 border rounded bg-gray-50 font-mono text-sm"
+                               aria-label="BBCode format">
+                        <button onclick="copyToClipboard('${bbcodeFormat}', 'BBCode')" 
+                                class="bg-gray-600 text-white px-4 py-2 rounded hover:bg-gray-700"
+                                aria-label="Copy BBCode">
+                            Copy
+                        </button>
+                    </div>
                 </div>
-                ` : ''}
-                <div class="metadata-item">
-                    <span class="metadata-label">Uploaded:</span>
-                    <span class="metadata-value">${formatDate(image.createdAt)}</span>
+                
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">HTML</label>
+                    <div class="flex gap-2">
+                        <input type="text" value="${htmlFormat}" readonly 
+                               class="flex-1 p-2 border rounded bg-gray-50 font-mono text-sm"
+                               aria-label="HTML format">
+                        <button onclick="copyToClipboard('${htmlFormat}', 'HTML')" 
+                                class="bg-gray-600 text-white px-4 py-2 rounded hover:bg-gray-700"
+                                aria-label="Copy HTML">
+                            Copy
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
         
-        <div class="copy-section">
-            <h3>Share & Embed</h3>
-            
-            <div class="copy-item">
-                <label class="copy-label">Direct URL:</label>
-                <div class="copy-input-group">
-                    <input type="text" class="copy-input" value="${image.rawUrl}" readonly aria-label="Direct URL">
-                    <button onclick="copyToClipboard('${image.rawUrl}', 'Direct URL')" class="btn btn-outline">Copy</button>
-                </div>
-            </div>
-            
-            <div class="copy-item">
-                <label class="copy-label">Markdown:</label>
-                <div class="copy-input-group">
-                    <input type="text" class="copy-input" value="${markdownFormat}" readonly aria-label="Markdown format">
-                    <button onclick="copyToClipboard('${markdownFormat}', 'Markdown')" class="btn btn-outline">Copy</button>
-                </div>
-            </div>
-            
-            <div class="copy-item">
-                <label class="copy-label">HTML:</label>
-                <div class="copy-input-group">
-                    <input type="text" class="copy-input" value="${htmlFormat}" readonly aria-label="HTML format">
-                    <button onclick="copyToClipboard('${htmlFormat}', 'HTML')" class="btn btn-outline">Copy</button>
-                </div>
-            </div>
-            
-            <div class="copy-item">
-                <label class="copy-label">BBCode:</label>
-                <div class="copy-input-group">
-                    <input type="text" class="copy-input" value="${bbcodeFormat}" readonly aria-label="BBCode format">
-                    <button onclick="copyToClipboard('${bbcodeFormat}', 'BBCode')" class="btn btn-outline">Copy</button>
-                </div>
-            </div>
-        </div>
-        
-        <div class="actions">
-            <a href="${image.rawUrl}" download class="btn" target="_blank" rel="noopener" aria-label="Download image">
-                💾 Download Image
-            </a>
-            <a href="/" class="btn btn-secondary" aria-label="Upload another image">
-                ➕ Upload Another
+        <!-- Upload Your Own -->
+        <div class="text-center">
+            <a href="/" class="bg-blue-600 text-white px-6 py-3 rounded hover:bg-blue-700"
+               aria-label="Upload your own image">
+                Upload your own
             </a>
         </div>
     </main>
     
-    <div id="toast" class="toast" role="alert" aria-live="polite"></div>
+    <div id="toast" class="fixed top-4 right-4 bg-green-600 text-white px-4 py-2 rounded transform translate-x-full transition-transform z-50" 
+         role="alert" aria-live="polite"></div>
     
     <script>
         function copyToClipboard(text, label) {
             navigator.clipboard.writeText(text).then(() => {
-                showToast('Copied ' + label + ' to clipboard!');
+                showToast('Copied ' + label + '!');
             }).catch(() => {
                 // Fallback for older browsers
                 const textarea = document.createElement('textarea');
@@ -634,27 +369,19 @@ function generateImageViewPage(image: {
                 textarea.select();
                 document.execCommand('copy');
                 document.body.removeChild(textarea);
-                showToast('Copied ' + label + ' to clipboard!');
+                showToast('Copied ' + label + '!');
             });
         }
         
         function showToast(message) {
             const toast = document.getElementById('toast');
             toast.textContent = message;
-            toast.classList.add('show');
+            toast.classList.remove('translate-x-full');
             
             setTimeout(() => {
-                toast.classList.remove('show');
+                toast.classList.add('translate-x-full');
             }, 3000);
         }
-        
-        // Keyboard navigation support
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape') {
-                // Close any open modals or return to home
-                window.location.href = '/';
-            }
-        });
     </script>
 </body>
 </html>
@@ -668,68 +395,14 @@ function generateNotFoundPage() {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Image Not Found - PicLink</title>
-    <style>
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: #f8fafc;
-            color: #334155;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            min-height: 100vh;
-            margin: 0;
-        }
-        
-        .error-container {
-            text-align: center;
-            background: white;
-            padding: 3rem;
-            border-radius: 12px;
-            border: 1px solid #e2e8f0;
-            max-width: 400px;
-        }
-        
-        .error-icon {
-            font-size: 4rem;
-            margin-bottom: 1rem;
-        }
-        
-        .error-title {
-            font-size: 1.5rem;
-            font-weight: 600;
-            margin-bottom: 0.5rem;
-            color: #1e293b;
-        }
-        
-        .error-message {
-            color: #64748b;
-            margin-bottom: 2rem;
-        }
-        
-        .btn {
-            background: #3b82f6;
-            color: white;
-            border: none;
-            padding: 0.75rem 1.5rem;
-            border-radius: 6px;
-            text-decoration: none;
-            display: inline-block;
-            font-weight: 500;
-            transition: background-color 0.2s;
-        }
-        
-        .btn:hover {
-            background: #2563eb;
-        }
-    </style>
+    <title>Image Not Found</title>
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
-    <div class="error-container">
-        <div class="error-icon">🖼️</div>
-        <h1 class="error-title">Image Not Found</h1>
-        <p class="error-message">The image you're looking for doesn't exist or has been removed.</p>
-        <a href="/" class="btn">Upload New Image</a>
+<body class="bg-gray-50 min-h-screen flex items-center justify-center">
+    <div class="text-center bg-white p-8 rounded-lg border max-w-md">
+        <h1 class="text-xl font-medium mb-2">Image Not Found</h1>
+        <p class="text-gray-600 mb-4">The image you're looking for doesn't exist or has been removed.</p>
+        <a href="/" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Upload New Image</a>
     </div>
 </body>
 </html>
@@ -743,68 +416,14 @@ function generateErrorPage(message: string) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Error - PicLink</title>
-    <style>
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: #f8fafc;
-            color: #334155;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            min-height: 100vh;
-            margin: 0;
-        }
-        
-        .error-container {
-            text-align: center;
-            background: white;
-            padding: 3rem;
-            border-radius: 12px;
-            border: 1px solid #e2e8f0;
-            max-width: 400px;
-        }
-        
-        .error-icon {
-            font-size: 4rem;
-            margin-bottom: 1rem;
-        }
-        
-        .error-title {
-            font-size: 1.5rem;
-            font-weight: 600;
-            margin-bottom: 0.5rem;
-            color: #1e293b;
-        }
-        
-        .error-message {
-            color: #64748b;
-            margin-bottom: 2rem;
-        }
-        
-        .btn {
-            background: #3b82f6;
-            color: white;
-            border: none;
-            padding: 0.75rem 1.5rem;
-            border-radius: 6px;
-            text-decoration: none;
-            display: inline-block;
-            font-weight: 500;
-            transition: background-color 0.2s;
-        }
-        
-        .btn:hover {
-            background: #2563eb;
-        }
-    </style>
+    <title>Error</title>
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
-    <div class="error-container">
-        <div class="error-icon">⚠️</div>
-        <h1 class="error-title">Something went wrong</h1>
-        <p class="error-message">${message}</p>
-        <a href="/" class="btn">Go Home</a>
+<body class="bg-gray-50 min-h-screen flex items-center justify-center">
+    <div class="text-center bg-white p-8 rounded-lg border max-w-md">
+        <h1 class="text-xl font-medium mb-2">Something went wrong</h1>
+        <p class="text-gray-600 mb-4">${message}</p>
+        <a href="/" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Go Home</a>
     </div>
 </body>
 </html>
