@@ -1,0 +1,79 @@
+You are Replit Agent / Senior Full-Stack Engineer. Read these instructions CAREFULLY and follow them 100%.
+
+## Goal
+When a user opens a shared link from a friend (example: https://<host>/i/<id>) it MUST display an **HTML page** with the image and controls (similar to the PostImage screenshot provided), **NOT** return the raw image file directly.  
+The raw file must still be accessible through a **separate direct/raw URL** (e.g. `rawUrl` or `/raw/<id>`).
+
+## STRONG RULES
+1. **DO NOT** 302-redirect `/i/<id>` to the raw image URL. `/i/<id>` must return a **full HTML page**.
+2. **MUST** keep a direct raw image URL (from upload response or `/raw/<id>`) that streams the file bytes.
+3. **MUST** include OpenGraph/Twitter meta tags in `/i/<id>` so social apps show image preview (`og:image` = raw URL).
+4. **MUST** work on desktop and mobile; fully accessible (`aria-*`, keyboard navigation, focus handling).
+
+## Endpoints
+- `POST /api/upload`
+  - Returns `{ id, rawUrl, shortUrl: "https://<host>/i/<id>", width, height, size, mime }`.
+  - `rawUrl` = direct file address.
+- `GET /i/:id`
+  - Returns HTML page (200 OK) containing:
+    - Header/top bar with logo, title.
+    - Toolbar with actions: Zoom, “Open original image” (links to `rawUrl`), Share (social icons), Copy buttons (Direct URL, Markdown, BBCode, HTML `<img>`).
+    - Centered responsive preview (`max-width: 90vw; max-height: 90vh`).
+    - Metadata: filename, size, MIME type, dimensions, upload date.
+    - Buttons: “Open image”, “Upload another”.
+    - `<head>` includes OG/Twitter meta tags.
+  - Cache headers: `Cache-Control: public, max-age=600, s-maxage=600` (for HTML).
+  - If `id` not found → return 404 HTML page with message.
+- `GET /raw/:id` (or provider `rawUrl`)
+  - Returns raw image bytes with `Content-Type: image/*` and `Cache-Control: public, immutable, max-age=31536000`.
+  - This is the ONLY route that streams raw bytes from our domain.
+
+## Optional
+- `/i/:id?raw=1` may redirect or stream raw image. Default is **always the HTML page**.
+
+## UI / UX
+- Layout similar to PostImage: light header, toolbar above image, centered photo.
+- Copy buttons with clipboard feedback.
+- Download button → `rawUrl` (`target="_blank" rel="noopener"`).
+- Sharing snippets: Markdown `![](RAW_URL)`, BBCode `[img]RAW_URL[/img]`, HTML `<img src="RAW_URL">`.
+- Simple zoom/lightbox support.
+- Fully keyboard accessible.
+
+## SEO / Social
+In `<head>` of `/i/:id` include:
+```html
+<title>PicLink — Image</title>
+<meta property="og:title" content="PicLink Image">
+<meta property="og:description" content="Uploaded image">
+<meta property="og:image" content="RAW_URL">
+<meta name="twitter:card" content="summary_large_image">
+Server / Security
+Validate id → fetch metadata from DB.
+
+Strip EXIF metadata on upload if possible.
+
+Rate-limit uploads; GET /i/:id remains public.
+
+No path traversal — always lookup by DB.
+
+Acceptance Test
+Upload file → get { id, rawUrl, shortUrl }.
+
+GET shortUrl returns HTML with <img src="RAW_URL"> and <meta property="og:image" content="RAW_URL">.
+
+“Open original image” link returns raw bytes.
+
+GET /raw/:id returns raw image (Content-Type: image/*).
+
+Invalid id → 404 HTML error page.
+
+Short non-negotiables
+/i/:id = ALWAYS a page, never raw.
+
+/raw/:id (or rawUrl) = raw file bytes.
+
+OG/Twitter meta included.
+
+Page contains download/share/copy tools, and is a11y-friendly.
+
+Follow these rules exactly. If something is ambiguous, default to the HTML page view for /i/:id.

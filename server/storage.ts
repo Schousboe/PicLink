@@ -23,6 +23,8 @@ export class MemStorage implements IStorage {
       id,
       deleteToken,
       createdAt: new Date(),
+      width: imageData.width ?? null,
+      height: imageData.height ?? null,
     };
     
     this.images.set(id, image);
