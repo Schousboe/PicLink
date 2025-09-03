@@ -23,7 +23,6 @@ export const insertImageSchema = createInsertSchema(images).omit({
 export type InsertImage = z.infer<typeof insertImageSchema>;
 export type Image = typeof images.$inferSelect;
 
-// Upload response type
 export const uploadResponseSchema = z.object({
   id: z.string(),
   rawUrl: z.string(),

@@ -1,6 +1,6 @@
 # Overview
 
-PicLink is a minimal image hosting web application (similar to Postimg/Imgur) built as a full-stack TypeScript application. The system allows users to upload images through a drag-and-drop interface and receive direct links for sharing. The application is designed with a clean, modular architecture that separates concerns between frontend presentation, backend API handling, and storage management.
+PicLink is a minimal image hosting web application built as a full-stack TypeScript application. The system allows users to upload images through a drag-and-drop interface and receive direct links for sharing. The application is designed with a clean, modular architecture that separates concerns between frontend presentation, backend API handling, and storage management.
 
 # User Preferences
 
