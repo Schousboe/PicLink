@@ -250,19 +250,6 @@ function generateImageViewPage(image: {
     <title>Image</title>
     <meta name="description" content="Uploaded image">
     
-    <!-- OpenGraph Meta Tags -->
-    <meta property="og:title" content="Image">
-    <meta property="og:description" content="Uploaded image">
-    <meta property="og:image" content="${image.rawUrl}">
-    <meta property="og:url" content="${image.shortUrl}">
-    <meta property="og:type" content="website">
-    
-    <!-- Twitter Meta Tags -->
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Image">
-    <meta name="twitter:description" content="Uploaded image">
-    <meta name="twitter:image" content="${image.rawUrl}">
-    
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600&display=swap" rel="stylesheet">
@@ -363,7 +350,6 @@ function generateImageViewPage(image: {
     </style>
 </head>
 <body class="min-h-screen bg-background text-foreground font-sans">
-    <!-- Header - Exact same as original site -->
     <header class="border-b border-border bg-card">
         <div class="container mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex items-center justify-between h-16">
