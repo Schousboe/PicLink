@@ -475,7 +475,7 @@ function generateImageViewPage(image: {
                 </div>
             </div>
             <div class="mt-6 pt-6 border-t border-border text-center text-sm text-muted-foreground">
-                <p>&copy; 2024 PicLink. All rights reserved. Built with React, TypeScript, and Tailwind CSS.</p>
+                <p>&copy; 2025 PicLink. All rights reserved. Built with React, TypeScript, and Tailwind CSS.</p>
             </div>
         </div>
     </footer>
