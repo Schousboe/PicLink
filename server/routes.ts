@@ -9,7 +9,6 @@ import { validateFile, ALLOWED_MIME_TYPES, MAX_FILE_SIZE } from "./utils/validat
 import { insertImageSchema, type UploadResponse } from "@shared/schema";
 import multer from "multer";
 
-// Configure multer for file uploads
 const upload = multer({
   storage: multer.memoryStorage(),
   limits: {
